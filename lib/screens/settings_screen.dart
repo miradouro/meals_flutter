@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:meals/screens/tabs_screen.dart';
 import '../components/main_drawer.dart';
 import '../utils/app_routes.dart';
 import '../models/settings.dart';
 
 class SettingsScreen extends StatefulWidget {
+  final Function(Settings) onSettingsChanged;
+
+  const SettingsScreen(this.onSettingsChanged);
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   var settings = Settings();
 
-  Widget _creteSwitch(String title,
-      String subtitle,
-      bool value,
-      Function(bool) onChanged,) {
+  Widget _creteSwitch(
+    String title,
+    String subtitle,
+    bool value,
+    Function(bool) onChanged,
+  ) {
     return SwitchListTile.adaptive(
       activeColor: Colors.green,
       title: Text(title),
       subtitle: Text(subtitle),
       value: value,
-      onChanged: onChanged,
+      onChanged: (value) {
+        onChanged(value);
+        widget.onSettingsChanged(settings);
+      },
     );
   }
 
@@ -40,10 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: EdgeInsets.all(20),
               child: Text(
                 'Configurações',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleMedium,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             Expanded(
@@ -53,31 +59,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     'Sem Glutén',
                     'Só exibe refeições sem glutén!',
                     settings.isGlutenFree,
-                        (value) =>
-                        setState(() => settings.isGlutenFree = value),
+                    (value) => setState(() => settings.isGlutenFree = value),
                   ),
                   _creteSwitch(
                     'Sem Lactose',
                     'Só exibe refeições sem lactose!',
                     settings.isLactoseFree,
-                        (value) =>
-                        setState(() => settings.isLactoseFree = value),
+                    (value) => setState(() => settings.isLactoseFree = value),
                   ),
                   _creteSwitch(
                     'Vegana',
                     'Só exibe refeições veganas!',
                     settings.isVegan,
-                        (value) =>
-                        setState(() => settings.isVegan = value),
+                    (value) => setState(() => settings.isVegan = value),
                   ),
                   _creteSwitch(
                     'vegetariana',
                     'Só exibe refeições vegetarianas!',
                     settings.isVegetarian,
-                        (value) =>
-                        setState(() => settings.isVegetarian = value),
+                    (value) => setState(() => settings.isVegetarian = value),
                   ),
                 ],
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              color: Theme.of(context).primaryColor,
+              child: TextButton(
+                child: Text(
+                  "Salvar",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => TabsScreen()));
+                  print('apertou');
+                },
               ),
             ),
           ],
