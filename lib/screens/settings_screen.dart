@@ -102,10 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.white,
                   ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => TabsScreen()));
-                  print('apertou');
-                },
+                onPressed: () {},
               ),
             ),
           ],
